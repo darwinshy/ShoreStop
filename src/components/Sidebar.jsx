@@ -1,13 +1,21 @@
 import React from 'react';
-import { Link, NavLink, Navlink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { SiShopware } from 'react-icons/si';
 import { MdOutlineCancel } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
+import { useStateContext } from '../contexts/ContextProvider';
 
 import { links } from '../data/dummy';
 
 const Sidebar = () => {
-  const activeMenu = true;
+  const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+
+  const handleCloseSideBar = () => {
+    if (activeMenu && screenSize <= 900) {
+      setActiveMenu(false);
+    }
+  };
+
   const activeLink =
     'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-md m-2';
   const inActiveLink =
@@ -21,7 +29,7 @@ const Sidebar = () => {
             <Link
               to="/"
               className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
-              onClick={() => {}}
+              onClick={handleCloseSideBar}
             >
               <SiShopware />
               <span>ShoreStop</span>
@@ -30,7 +38,7 @@ const Sidebar = () => {
               <button
                 type="button"
                 className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden"
-                onClick={() => {}}
+                onClick={() => setActiveMenu(false)}
               >
                 <MdOutlineCancel />
               </button>
@@ -44,7 +52,7 @@ const Sidebar = () => {
                   <NavLink
                     to={`./${link.name}`}
                     key={index}
-                    onClick={() => {}}
+                    onClick={handleCloseSideBar}
                     className={({ isActive }) =>
                       isActive ? activeLink : inActiveLink
                     }
