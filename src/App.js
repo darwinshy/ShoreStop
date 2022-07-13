@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
@@ -27,17 +27,35 @@ import {
 import './App.css';
 
 function App() {
-  const { activeMenu } = useStateContext();
+  const {
+    setCurrentColor,
+    setCurrentMode,
+    currentMode,
+    activeMenu,
+    currentColor,
+    themeSettings,
+    setThemeSettings,
+  } = useStateContext();
 
+  useEffect(() => {
+    const currentThemeColor = localStorage.getItem('colorMode');
+    const currentThemeMode = localStorage.getItem('themeMode');
+    if (currentThemeColor && currentThemeMode) {
+      setCurrentColor(currentThemeColor);
+      setCurrentMode(currentThemeMode);
+    }
+  }, []);
   return (
-    <>
+    <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <BrowserRouter>
         <div className="flex relative dark:bg-main-dark-bg">
           <div className="fixed right-4 bottom-4" style={{ zIndex: '1000' }}>
             <TooltipComponent content="Settings" position="Top">
               <button
                 type="button"
-                style={{ background: 'blue', borderRadius: '50%' }}
+                onClick={() => setThemeSettings(true)}
+                style={{ background: currentColor, borderRadius: '50%' }}
+                ShoreStop
                 className="text-3xl p-3 hover:drop-shadow-xl hover:bg-light-gray text-white"
               >
                 <FiSettings />
@@ -63,7 +81,7 @@ function App() {
             }
           >
             <Navbar />
-
+            {themeSettings && <ThemeSettings />}
             <Routes>
               {/* Dashboard */}
               <Route path="/" element={<Ecommerce />} />
@@ -88,10 +106,11 @@ function App() {
               <Route path="/pyramid" element={<Pyramid />} />
               <Route path="/stacked" element={<Stacked />} />
             </Routes>
+            <Footer />
           </div>
         </div>
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 

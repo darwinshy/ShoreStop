@@ -1,9 +1,32 @@
-import React from 'react'
+import React from 'react';
+import {
+  SalesOverview,
+  Earnings,
+  Revenue,
+  WeeklyStats,
+  RecentTransactions,
+  Branding,
+  Activities,
+} from '../components/Ecommerce/';
 
-function Ecommerce() {
+const Ecommerce = () => {
   return (
-    <div></div>
-  )
-}
+    <div className="mt-24">
+      <Earnings />
+      <Revenue />
 
-export default Ecommerce
+      <div className="flex gap-10 m-4 flex-wrap justify-center">
+        <RecentTransactions />
+        <SalesOverview />
+      </div>
+
+      <div className="flex flex-wrap justify-center">
+        <WeeklyStats />
+        <Branding />
+        <Activities />
+      </div>
+    </div>
+  );
+};
+
+export default Ecommerce;
